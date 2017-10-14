@@ -1,32 +1,19 @@
 function TH3_Q7()
-    nNumber = 41;
-    while(nNumber <= 100)
-        imgTrainAll = loadMNISTImages('train-images.idx3-ubyte');
-        lblTrainAll = loadMNISTLabels('train-labels.idx1-ubyte');
-        Mdl = fitcknn(imgTrainAll',lblTrainAll);
-
-        imgTestAll = loadMNISTImages('t10k-images.idx3-ubyte');
+    nNumber = 1;
+    right = 0;
+    wrong = 0;
+    while(nNumber <= 10000)
         lblTestAll = loadMNISTLabels('t10k-labels.idx1-ubyte');
 
-        nTestImgs = size(imgTestAll,2);
-
-        imgTest = imgTestAll(:,nNumber);
-        lblPredictTest = predict(Mdl,imgTest');
         lblImageTest = lblTestAll(nNumber);
-        figure;
-        img2D = reshape(imgTest,28,28);
-        imshow(img2D);
-        strLabelImage = 'Ban dau ';
-        strLabelImage = [strLabelImage,num2str(lblTestAll(nNumber)),'.'];
-        strLabelImage = [strLabelImage,' Du doan: '];
-        strLabelImage = [strLabelImage,num2str(lblPredictTest),'.'];
 
-        if(lblPredictTest == lblImageTest)
-            strLabelImage = [strLabelImage,' Ket qua dung.'];
+        if(num2str(TH3_Q5(nNumber)) == num2str(lblImageTest))
+            right = right + 1;
         else
-            strLabelImage = [strLabelImage,' Ket qua sai.'];
+            wrong = wrong + 1;
         end
-        title(strLabelImage);
         nNumber = nNumber + 1;
     end
+    fprintf('\nSo anh nhan dang dung: [%d].',right);
+    fprintf('\nSo anh nhan dang sai: [%d].',wrong);
 end
