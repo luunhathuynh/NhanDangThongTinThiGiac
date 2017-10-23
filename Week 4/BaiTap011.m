@@ -1,4 +1,4 @@
-function BaiTap011()
+function BaiTap011(k)
     imgTrainAll = loadMNISTImages('./train-images.idx3-ubyte');
 	lblTrainAll = loadMNISTLabels('./train-labels.idx1-ubyte');
     
@@ -8,7 +8,7 @@ function BaiTap011()
     for i = 1:nNumTrainImages
         imgTrainAll_hist(:,i) = imhist(imgTrainAll(:,i),nBins);
     end
-    Mdl = fitcknn(imgTrainAll_hist',lblTrainAll);
+    Mdl = fitcknn(imgTrainAll_hist',lblTrainAll,'NumNeighbors',k);
     imgTestAll = loadMNISTImages('./t10k-images.idx3-ubyte');
 	lblTestAll = loadMNISTLabels('./t10k-labels.idx1-ubyte');
     

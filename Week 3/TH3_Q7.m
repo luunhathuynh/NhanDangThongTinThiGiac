@@ -1,19 +1,12 @@
-function TH3_Q7()
-    nNumber = 1;
-    right = 0;
-    wrong = 0;
-    while(nNumber <= 10000)
-        lblTestAll = loadMNISTLabels('t10k-labels.idx1-ubyte');
-
-        lblImageTest = lblTestAll(nNumber);
-
-        if(num2str(TH3_Q5(nNumber)) == num2str(lblImageTest))
-            right = right + 1;
-        else
-            wrong = wrong + 1;
-        end
-        nNumber = nNumber + 1;
-    end
-    fprintf('\nSo anh nhan dang dung: [%d].',right);
-    fprintf('\nSo anh nhan dang sai: [%d].',wrong);
+function TH3_Q7(k)
+    imgTrainAll = loadMNISTImages('train-images.idx3-ubyte');
+    lblTrainAll = loadMNISTLabels('train-labels.idx1-ubyte');
+    Mdl = fitcknn(imgTrainAll',lblTrainAll,'NumNeighbors',k);
+    
+    imgTestAll = loadMNISTImages('t10k-images.idx3-ubyte');
+    lblTestAll = loadMNISTLabels('t10k-labels.idx1-ubyte');
+    lblResult = predict(Mdl,imgTestAll');
+    nResult = (lblResult == lblTestAll);
+    nCount = sum(nResult);
+    fprintf('So luong mau dung: %d\n',nCount);
 end
