@@ -1,37 +1,44 @@
 function BaiTap012()
-    imgTrainAll = loadMNISTImages('./train-images.idx3-ubyte');
-    lblTrainAll = loadMNISTLabels('./train-labels.idx1-ubyte');
+    load('imgTrainImagesAll.mat');
+    imgTrainAll = imgTrainImagesAll;
+    load('lblTrainLabelsAll.mat');
+    for i = 1:size(lblTrainLabelsAll,2)
+        lblTrainAll(i,1) = lblTrainLabelsAll(1,i);
+    end
+    load('imgTestImagesAll.mat');
+    imgTestAll = imgTestImagesAll;
+    load('lblTestLabelsAll.mat');
+    for i = 1:size(lblTestLabelsAll,2)
+        lblTestAll(i,1) = lblTestLabelsAll(1,i);
+    end
 
     imgI1D = imgTrainAll(:,1);
-    imgI2D = reshape(imgI1D,28,28);
+    imgI2D = reshape(imgI1D,112,92);
     featureVector = extractLBPFeatures(imgI2D);
     nSize = length(featureVector);
     nTrainData = size(imgTrainAll,2);
     featuresDataTrain = zeros(nSize,nTrainData);
     for i = 1:nTrainData
         imgI1D = imgTrainAll(:,i);
-        imgI2D = reshape(imgI1D,28,28);
+        imgI2D = reshape(imgI1D,112,92);
         imshow(imgI2D);
         featuresDataTrain(:,i) = extractLBPFeatures(imgI2D);
     end
     
     Mdl = fitcknn(featuresDataTrain', lblTrainAll);
     
-    imgTestAll = loadMNISTImages('./t10k-images.idx3-ubyte');
-    lblTestAll = loadMNISTLabels('./t10k-labels.idx1-ubyte');
     imgI1D = imgTestAll(:,1);
-    imgI2D = reshape(imgI1D,28,28);
+    imgI2D = reshape(imgI1D,112,92);
     featureVector = extractLBPFeatures(imgI2D);
     nSize = length(featureVector);
     nTestData = size(imgTestAll,2);
     featuresDataTest = zeros(nSize,nTestData);
     for i = 1:nTestData
         imgI1D = imgTestAll(:,i);
-        imgI2D = reshape(imgI1D,28,28);
+        imgI2D = reshape(imgI1D,112,92);
         featuresDataTest(:,i) = extractLBPFeatures(imgI2D);
     end
     lblResult = predict(Mdl,featuresDataTest');
-    lblResult = num2str(lblResult);
     nResult = (lblResult == lblTestAll);
     nCount = sum(nResult);
     fprintf('\nSo luong mau dung: %d\n',nCount);
