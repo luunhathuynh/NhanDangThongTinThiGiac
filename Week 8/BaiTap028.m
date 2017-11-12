@@ -7,8 +7,7 @@ function BaiTap028()
     for i = 1:nTrainImages
         imgI = imgTrainAll(:,i);
         img2D = reshape(imgI,28,28);
-        [featureVector,hogVisualization] = extractHOGFeatures(img2D);
-        imgTrainAll_HOG(:,i) = featureVector;
+        imgTrainAll_HOG(:,i) = extractHOGFeatures(img2D);
     end
     
     Mdl = fitcecoc(imgTrainAll_HOG',lblTrainAll);
@@ -19,8 +18,7 @@ function BaiTap028()
     for i = 1:nTestImages
         imgI = imgTestAll(:,i);
         img2D = reshape(imgI,28,28);
-        [featureVector,hogVisualization] = extractHOGFeatures(img2D);
-        imgTestAll_HOG(:,i) = featureVector;
+        imgTestAll_HOG(:,i) = extractHOGFeatures(img2D);
     end
     lblResult = predict(Mdl,imgTestAll_HOG');
     nResult = (lblResult == lblTestAll);
